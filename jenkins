@@ -1,0 +1,25 @@
+pipeline {
+    parameters {
+        choice(
+            name: 'myParameter',
+            choices: "Option1\Option2",
+            description: 'interesting stuff' )
+      }
+      triggers {
+        cron ('0 16 * * *')
+     }
+    agent {label 'JDK11'} 
+    stages {
+        stage('clone') { 
+            steps {
+                git url:'https://github.com/Kalyanand-299/node.git' , branch : 'main' 
+            }
+        }
+        stage('install') {
+            steps { 
+
+                sh 'mvn package'
+            }
+        }
+    }
+}
